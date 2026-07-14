@@ -1,32 +1,24 @@
-import cars from "../../data/cars.js";
+import mongoose from "mongoose";
+import car from "../../data/car.js";
 
-export function getAll() {
-    return cars;
+const { ObjectId } = mongoose.Types;
+
+export async function getAll() {
+    return await car.find();
 }
 
-export function add(car) {
-    cars.push(car);
-    return car;
+export async function add(newCar) {
+    return await car.create(newCar);
 }
 
-export function update(id, newCar) {
-    const index = cars.findIndex(car => car.id == id);
-
-    if (index === -1) {
-        return false;
-    }
-
-    cars[index] = newCar;
-    return true;
+export async function update(id, newCar) {
+    const updateId = new ObjectId(id);
+    return await car.findByIdAndUpdate(updateId, newCar, {
+        new: true,
+        runValidators: true
+    });
 }
 
-export function del(id) {
-    const index = cars.findIndex(car => car.id == id);
-
-    if (index === -1) {
-        return false;
-    }
-
-    cars.splice(index, 1);
-    return true;
+export async function del(id) {
+    return await car.findByIdAndDelete(id);
 }

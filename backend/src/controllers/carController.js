@@ -1,46 +1,70 @@
 import * as CarModel from "../models/carModel.js";
 
-export function getCars(req, res) {
-    const cars = CarModel.getAll();
+export async function getCars(req, res) {
+    const cars = await CarModel.getAll();
 
     return res.status(200).json(cars);
 }
 
-export function addCar(req, res) {
-    const car = req.body;
+export async function addCar(req, res) {
+    const newCar = await CarModel.add(req.body);
+    const carObject = newCar.toObject
+        ? newCar.toObject({ versionKey: false })
+        : JSON.parse(JSON.stringify(newCar));
 
-    CarModel.add(car);
+    if (!carObject.id && carObject._id) {
+        carObject.id = carObject._id;
+        delete carObject._id;
+    }
 
     return res.status(201).json({
         message: "Car added successfully",
-        data: car
+        data: carObject
     });
 }
 
-export function updateCar(req, res) {
-    const updated = CarModel.update(req.params.id, req.body);
+export async function updateCar(req, res) {
+    const id = req.params.id || req.body.id || req.body._id;
 
-    if (!updated) {
+    if (!id) {
+        return res.status(400).json({
+            error: "Car id is required for update"
+        });
+    }
+
+    const updatedCar = await CarModel.update(id, req.body);
+
+    if (!updatedCar) {
         return res.status(404).json({
             error: "Car not found"
         });
     }
 
-    res.json({
-        message: "Car updated successfully"
+    const carObject = updatedCar.toObject
+        ? updatedCar.toObject({ versionKey: false })
+        : JSON.parse(JSON.stringify(updatedCar));
+
+    if (!carObject.id && carObject._id) {
+        carObject.id = carObject._id;
+        delete carObject._id;
+    }
+
+    return res.status(200).json({
+        message: "Car updated successfully",
+        data: carObject
     });
 }
 
-export function deleteCar(req, res) {
-    const deleted = CarModel.del(req.params.id);
+export async function deleteCar(req, res) {
+    const deletedCar = await CarModel.del(req.params.id);
 
-    if (!deleted) {
+    if (!deletedCar) {
         return res.status(404).json({
             error: "Car not found"
         });
     }
 
-    res.json({
+    return res.status(200).json({
         message: "Car deleted successfully"
     });
 }
