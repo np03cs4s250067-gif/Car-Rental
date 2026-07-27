@@ -15,7 +15,13 @@ export const carRules = [
     body('available')
     .notEmpty()
     .isBoolean()
-    .withMessage('Availability must be provided')
+    .withMessage('Availability must be provided'),
+
+    body('plateNumber')
+    .notEmpty()
+    .isString()
+    .trim()
+    .withMessage('Plate number is required')
 ]
 
 export const handleCarValidation = (req, res, next) => {

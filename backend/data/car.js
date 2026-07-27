@@ -22,24 +22,11 @@ const carSchema = mongoose.Schema({
     image: {
         required: false,
         type: String
-    }
-}, {
-    timestamps: true,
-    toJSON: {
-        virtuals: true,
-        versionKey: false,
-        transform(doc, ret) {
-            ret.id = ret._id
-            delete ret._id
-        }
     },
-    toObject: {
-        virtuals: true,
-        versionKey: false,
-        transform(doc, ret) {
-            ret.id = ret._id
-            delete ret._id
-        }
+    plateNumber: {
+        type: String,
+        required: true,
+        trim: true
     }
 })
 
