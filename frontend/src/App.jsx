@@ -34,7 +34,7 @@ export default function App() {
   // Update document title with available car count
   const availableCars = cars.filter((car) => car?.available).length
   useEffect(() => {
-    document.title = `AutoHire | ${availableCars} cars available`
+    document.title = `HellFire | ${availableCars} cars available`
   }, [availableCars])
 
   async function addBooking(bookingInfo) {

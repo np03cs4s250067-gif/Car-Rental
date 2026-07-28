@@ -51,19 +51,19 @@ const cars = [
 const users = [
   {
     name: 'Admin User',
-    email: 'admin@autohire.com',
+    email: 'admin@hellfire.com',
     password: 'admin123',
     role: 'admin',
   },
   {
     name: 'Staff Member',
-    email: 'staff@autohire.com',
+    email: 'staff@hellfire.com',
     password: 'staff123',
     role: 'staff',
   },
   {
     name: 'Test Customer',
-    email: 'customer@autohire.com',
+    email: 'customer@hellfire.com',
     password: 'customer123',
     role: 'customer',
   },
@@ -85,9 +85,9 @@ for (const u of users) {
 console.log(`Inserted ${users.length} users`)
 console.log('')
 console.log('Default accounts:')
-console.log('  Admin  → admin@autohire.com    / admin123')
-console.log('  Staff  → staff@autohire.com    / staff123')
-console.log('  Customer → customer@autohire.com / customer123')
+console.log('  Admin  → admin@hellfire.com    / admin123')
+console.log('  Staff  → staff@hellfire.com    / staff123')
+console.log('  Customer → customer@hellfire.com / customer123')
 console.log('')
 console.log('Done!')
 

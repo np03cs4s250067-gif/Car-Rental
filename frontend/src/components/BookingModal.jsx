@@ -32,86 +32,96 @@ export default function BookingModal({ price, closeModal, onBooking }) {
     <div
       id='modalOverlay'
       onClick={(e) => e.target.id === 'modalOverlay' && closeModal()}
-      className='fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)]'
+      className='fixed inset-0 p-4 flex justify-center items-center w-full h-full z-[1000] bg-black/70 backdrop-blur-md transition-all animate-fadeIn'
     >
       <div
         role='dialog'
         aria-modal='true'
         aria-labelledby='modal-title'
-        tabIndex='-1'
-        className='w-full max-w-lg bg-white border border-slate-100 shadow-lg rounded-lg relative max-h-[95vh] overflow-y-auto outline-none p-4 md:p-6 z-50'
+        className='w-full max-w-lg bg-[#0F172A] border border-slate-800 shadow-2xl rounded-3xl p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto z-50 text-slate-100 space-y-6'
       >
         <button
           type='button'
           aria-label='Close modal'
           onClick={closeModal}
-          className='flex items-center absolute top-6 right-6 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded'
+          className='absolute top-6 right-6 text-slate-400 hover:text-white p-1 rounded-lg transition cursor-pointer'
         >
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            className='size-3 cursor-pointer fill-slate-500 hover:fill-red-600'
-            aria-hidden='true'
-            viewBox='0 0 329.269 329'
-          >
-            <path d='M194.8 164.77 323.013 36.555c8.343-8.34 8.343-21.825 0-30.164-8.34-8.34-21.825-8.34-30.164 0L164.633 134.605 36.422 6.391c-8.344-8.34-21.824-8.34-30.164 0-8.344 8.34-8.344 21.824 0 30.164l128.21 128.215L6.259 292.984c-8.344 8.34-8.344 21.825 0 30.164a21.27 21.27 0 0 0 15.082 6.25c5.46 0 10.922-2.09 15.082-6.25l128.21-128.214 128.216 128.214a21.27 21.27 0 0 0 15.082 6.25c5.46 0 10.922-2.09 15.082-6.25 8.343-8.34 8.343-21.824 0-30.164zm0 0' />
+          <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
           </svg>
         </button>
 
-        <h2 id='modal-title' className='text-xl font-bold mb-6 text-[#111111]'>
-          Select Rental Dates
-        </h2>
+        <div>
+          <div className='inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-[10px] font-extrabold uppercase tracking-widest mb-2'>
+            Reserve Vehicle
+          </div>
+          <h2 id='modal-title' className='text-2xl font-black text-white'>
+            Select Rental Dates
+          </h2>
+          <p className='text-xs text-slate-400 font-medium mt-1'>
+            Choose your start and end dates to calculate the total price.
+          </p>
+        </div>
 
-        <div className='flex items-start gap-4'>
-          <div className='flex-1'>
-            <label className='block text-xs font-semibold text-brand-charcoal mb-1'>Start Date</label>
+        <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+          <div className='space-y-1.5'>
+            <label className='block text-xs font-extrabold uppercase tracking-widest text-slate-400'>
+              Start Date
+            </label>
             <input
-              id='datepicker-range-start'
-              name='start'
               type='date'
               value={start}
               onChange={(e) => setStart(e.target.value)}
-              className='block w-full px-3 py-2.5 border border-slate-300 text-sm rounded bg-white'
+              className='w-full px-3.5 py-3 border border-slate-800 rounded-xl bg-slate-900 text-xs font-bold text-slate-200 outline-none focus:border-cyan-400 transition cursor-pointer'
             />
           </div>
-          <span className='mt-7 text-brand-charcoal'>to</span>
-          <div className='flex-1'>
-            <label className='block text-xs font-semibold text-brand-charcoal mb-1'>End Date</label>
+          <div className='space-y-1.5'>
+            <label className='block text-xs font-extrabold uppercase tracking-widest text-slate-400'>
+              End Date
+            </label>
             <input
-              id='datepicker-range-end'
-              name='end'
               type='date'
               value={end}
               onChange={(e) => setEnd(e.target.value)}
-              className='block w-full px-3 py-2.5 border border-slate-300 text-sm rounded bg-white'
+              className='w-full px-3.5 py-3 border border-slate-800 rounded-xl bg-slate-900 text-xs font-bold text-slate-200 outline-none focus:border-cyan-400 transition cursor-pointer'
             />
           </div>
         </div>
 
         {days > 0 && (
-          <div className='mt-6 text-center bg-brand-cream p-4 rounded-xl border border-brand-charcoal/10'>
-            <p className='text-sm text-brand-charcoal'>
+          <div className='bg-gradient-to-r from-slate-900 to-[#0B0F17] p-5 rounded-2xl border border-cyan-500/30 text-center space-y-1 shadow-inner'>
+            <p className='text-xs font-semibold text-slate-400'>
               {days} day{days > 1 ? 's' : ''} × Rs. {Number(price).toLocaleString('en-IN')}/day
             </p>
-            <p className='text-2xl font-bold text-brand-black mt-1'>
-              Total: Rs. {Number(total).toLocaleString('en-IN')}
+            <p className='text-3xl font-black text-cyan-300'>
+              Rs. {Number(total).toLocaleString('en-IN')}
             </p>
           </div>
         )}
 
         {error && (
-          <p className='mt-4 text-sm text-red-600 border border-red-300 bg-red-50 p-3 rounded'>
+          <div className='text-xs font-semibold text-rose-300 border border-rose-500/30 bg-rose-500/10 p-3.5 rounded-xl'>
             {error}
-          </p>
+          </div>
         )}
 
-        <button
-          type='button'
-          onClick={handleBook}
-          disabled={!start || !end || days <= 0 || isSubmitting}
-          className='mt-5 ml-auto flex px-5 py-2.5 text-white text-sm font-semibold rounded-md cursor-pointer bg-brand-premium hover:bg-brand-black transition disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed'
-        >
-          {isSubmitting ? 'Booking...' : 'Confirm Rental'}
-        </button>
+        <div className='flex gap-3 pt-2'>
+          <button
+            type='button'
+            onClick={closeModal}
+            className='flex-1 py-3 text-xs font-bold text-slate-400 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl transition cursor-pointer'
+          >
+            Cancel
+          </button>
+          <button
+            type='button'
+            onClick={handleBook}
+            disabled={!start || !end || days <= 0 || isSubmitting}
+            className='flex-1 py-3 text-xs font-extrabold uppercase tracking-wider text-slate-900 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 hover:brightness-110 shadow-lg shadow-cyan-500/20 rounded-xl transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
+          >
+            {isSubmitting ? 'Confirming...' : 'Confirm Rental'}
+          </button>
+        </div>
       </div>
     </div>
   )

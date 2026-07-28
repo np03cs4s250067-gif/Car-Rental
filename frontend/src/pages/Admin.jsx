@@ -42,15 +42,20 @@ export default function Admin() {
 
   if (!user) {
     return (
-      <main className='max-w-7xl mx-auto px-4 py-10'>
-        <div className='bg-yellow-50 border border-yellow-300 rounded-2xl p-8 text-center'>
-          <h2 className='text-2xl font-bold text-yellow-800 mb-2'>Login Required</h2>
-          <p className='text-yellow-700 text-sm mb-4'>Please log in to access the dashboard.</p>
+      <main className='max-w-7xl mx-auto px-4 py-16 text-center'>
+        <div className='max-w-md mx-auto bg-[#0F172A] border border-slate-800 rounded-3xl p-8 shadow-2xl space-y-4'>
+          <div className='w-12 h-12 rounded-2xl bg-slate-800 text-slate-400 flex items-center justify-center mx-auto'>
+            <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' />
+            </svg>
+          </div>
+          <h2 className='text-2xl font-black text-white'>Login Required</h2>
+          <p className='text-xs text-slate-400'>Please log in to access the staff/admin dashboard.</p>
           <button
             onClick={() => navigate('/login')}
-            className='px-4 py-2 bg-brand-black text-white text-sm rounded-lg hover:bg-brand-charcoal transition cursor-pointer'
+            className='px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-900 font-extrabold text-xs uppercase tracking-wider rounded-xl hover:brightness-110 transition cursor-pointer'
           >
-            Log In
+            Log In Now
           </button>
         </div>
       </main>
@@ -59,15 +64,20 @@ export default function Admin() {
 
   if (!isStaffOrAdmin) {
     return (
-      <main className='max-w-7xl mx-auto px-4 py-10'>
-        <div className='bg-red-50 border border-red-300 rounded-2xl p-8 text-center'>
-          <h2 className='text-2xl font-bold text-red-700 mb-2'>Access Denied</h2>
-          <p className='text-red-600 text-sm'>Only Staff and Admin accounts can access the dashboard.</p>
+      <main className='max-w-7xl mx-auto px-4 py-16 text-center'>
+        <div className='max-w-md mx-auto bg-[#0F172A] border border-rose-500/30 bg-rose-500/10 rounded-3xl p-8 shadow-2xl space-y-4'>
+          <div className='w-12 h-12 rounded-2xl bg-rose-500/20 text-rose-300 flex items-center justify-center mx-auto'>
+            <svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636' />
+            </svg>
+          </div>
+          <h2 className='text-2xl font-black text-rose-300'>Access Denied</h2>
+          <p className='text-xs text-rose-300/80'>Only Staff and Admin accounts can access the fleet dashboard.</p>
           <button
             onClick={() => navigate('/')}
-            className='mt-4 px-4 py-2 bg-brand-black text-white text-sm rounded-lg hover:bg-brand-charcoal transition cursor-pointer'
+            className='px-6 py-3 bg-slate-800 text-slate-200 font-bold text-xs rounded-xl hover:bg-slate-700 transition cursor-pointer'
           >
-            Go Back Home
+            Return to Fleet
           </button>
         </div>
       </main>
@@ -75,95 +85,131 @@ export default function Admin() {
   }
 
   return (
-    <main className='max-w-7xl mx-auto px-4 py-10'>
-      <div className='flex justify-between items-center mb-8 border-b border-slate-200 pb-4'>
-        <h2 className='text-2xl font-bold text-slate-900'>Fleet Dashboard</h2>
+    <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8'>
+      {/* Header */}
+      <div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/80 pb-5'>
+        <div>
+          <h2 className='text-3xl font-black text-white tracking-tight'>Fleet Management</h2>
+          <p className='text-xs text-slate-400 font-medium mt-1'>
+            Overview of total inventory, active rentals, and monthly revenue
+          </p>
+        </div>
         {(user.role === 'admin' || user.isAdmin) && (
           <button
             onClick={() => navigate('/add-car')}
-            className='px-4 py-2 bg-brand-premium text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition cursor-pointer'
+            className='px-5 py-2.5 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-slate-900 text-xs font-extrabold uppercase tracking-wider rounded-xl hover:brightness-110 shadow-lg shadow-cyan-500/20 transition cursor-pointer'
           >
-            Add New Car
+            + Add New Car
           </button>
         )}
       </div>
 
-      {isLoading && <p className='text-slate-400 animate-pulse mb-6'>Loading dashboard...</p>}
-      {error && <p className='text-red-600 mb-6 bg-red-50 border border-red-200 p-3 rounded-lg text-sm'>{error}</p>}
+      {isLoading && <p className='text-slate-400 animate-pulse text-xs font-bold'>Loading dashboard metrics...</p>}
+      {error && <p className='text-rose-400 text-xs bg-rose-500/10 border border-rose-500/30 p-4 rounded-xl'>{error}</p>}
 
-      {/* Stats cards */}
+      {/* Stats Cards */}
       {stats && (
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-10'>
-          <div className='bg-white rounded-xl p-6 border border-slate-200 flex flex-col gap-1'>
-            <span className='text-sm font-medium text-slate-500'>Total Cars in Fleet</span>
-            <span className='text-3xl font-bold text-slate-900'>{stats.totalCars}</span>
+        <div className='grid grid-cols-1 sm:grid-cols-3 gap-6'>
+          <div className='bg-[#0F172A]/90 rounded-2xl p-6 border border-slate-800 shadow-xl space-y-2 relative overflow-hidden'>
+            <div className='absolute right-4 top-4 opacity-20 text-slate-400'>
+              <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10' />
+              </svg>
+            </div>
+            <span className='text-[10px] font-extrabold uppercase tracking-widest text-slate-500 block'>
+              Total Fleet
+            </span>
+            <span className='text-3xl font-black text-white'>{stats.totalCars}</span>
+            <p className='text-[11px] text-slate-400 font-medium'>Vehicles in system</p>
           </div>
-          <div className='bg-white rounded-xl p-6 border border-slate-200 flex flex-col gap-1'>
-            <span className='text-sm font-medium text-slate-500'>Active Rentals</span>
-            <span className='text-3xl font-bold text-slate-900'>{stats.rentedCount}</span>
+
+          <div className='bg-[#0F172A]/90 rounded-2xl p-6 border border-slate-800 shadow-xl space-y-2 relative overflow-hidden'>
+            <div className='absolute right-4 top-4 opacity-20 text-cyan-400'>
+              <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z' />
+              </svg>
+            </div>
+            <span className='text-[10px] font-extrabold uppercase tracking-widest text-slate-500 block'>
+              Active Rentals
+            </span>
+            <span className='text-3xl font-black text-cyan-400'>{stats.rentedCount}</span>
+            <p className='text-[11px] text-slate-400 font-medium'>Currently checked out</p>
           </div>
-          <div className='bg-white rounded-xl p-6 border border-slate-200 flex flex-col gap-1'>
-            <span className='text-sm font-medium text-slate-500'>Revenue This Month</span>
-            <span className='text-3xl font-bold text-slate-900'>
+
+          <div className='bg-[#0F172A]/90 rounded-2xl p-6 border border-slate-800 shadow-xl space-y-2 relative overflow-hidden'>
+            <div className='absolute right-4 top-4 opacity-20 text-emerald-400'>
+              <svg className='w-8 h-8' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={1.5} d='M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' />
+              </svg>
+            </div>
+            <span className='text-[10px] font-extrabold uppercase tracking-widest text-slate-500 block'>
+              Monthly Revenue
+            </span>
+            <span className='text-3xl font-black text-emerald-400'>
               Rs. {Number(stats.revenueThisMonth).toLocaleString('en-IN')}
             </span>
+            <p className='text-[11px] text-slate-400 font-medium'>Booked income this month</p>
           </div>
         </div>
       )}
 
-      {/* Fleet table */}
-      <h3 className='text-lg font-semibold text-slate-900 mb-4'>Fleet Management</h3>
-      <div className='overflow-x-auto rounded-xl border border-slate-200 bg-white'>
-        <table className='w-full text-sm text-left'>
-          <thead className='bg-slate-50 text-slate-600 border-b border-slate-200'>
-            <tr>
-              <th className='px-6 py-3 font-medium'>Model</th>
-              <th className='px-6 py-3 font-medium'>Type</th>
-              <th className='px-6 py-3 font-medium'>Daily Rate</th>
-              <th className='px-6 py-3 font-medium'>Status</th>
-              {(user.role === 'admin' || user.isAdmin) && (
-                <th className='px-6 py-3 font-medium text-right'>Actions</th>
-              )}
-            </tr>
-          </thead>
-          <tbody className='divide-y divide-slate-100'>
-            {cars.map((car) => (
-              <tr key={car._id ?? car.id} className='hover:bg-slate-50/50 transition'>
-                <td className='px-6 py-4 font-medium text-slate-900'>{car.model}</td>
-                <td className='px-6 py-4 text-slate-600'>{car.type}</td>
-                <td className='px-6 py-4 text-slate-900'>
-                  Rs. {Number(car.rate).toLocaleString('en-IN')}
-                </td>
-                <td className='px-6 py-4'>
-                  <span className={`px-2.5 py-1 rounded-md text-xs font-medium ${
-                    car.available
-                      ? 'bg-green-50 text-green-700 border border-green-200'
-                      : 'bg-slate-100 text-slate-600 border border-slate-200'
-                  }`}>
-                    {car.available ? 'Available' : 'Rented'}
-                  </span>
-                </td>
+      {/* Fleet Table */}
+      <div className='space-y-4'>
+        <h3 className='text-lg font-bold text-white'>Vehicle Inventory</h3>
+        <div className='overflow-x-auto rounded-2xl border border-slate-800 bg-[#0F172A]/90 shadow-xl'>
+          <table className='w-full text-xs text-left'>
+            <thead className='bg-slate-900/90 text-slate-400 border-b border-slate-800 uppercase tracking-wider font-extrabold text-[10px]'>
+              <tr>
+                <th className='px-6 py-4'>Model</th>
+                <th className='px-6 py-4'>Type</th>
+                <th className='px-6 py-4'>Daily Rate</th>
+                <th className='px-6 py-4'>Status</th>
                 {(user.role === 'admin' || user.isAdmin) && (
-                  <td className='px-6 py-4 text-right'>
-                    <button
-                      onClick={() => handleDelete(car._id ?? car.id)}
-                      className='text-red-600 hover:text-red-800 font-medium text-sm transition cursor-pointer'
-                    >
-                      Delete
-                    </button>
-                  </td>
+                  <th className='px-6 py-4 text-right'>Action</th>
                 )}
               </tr>
-            ))}
-            {cars.length === 0 && !isLoading && (
-              <tr>
-                <td colSpan='5' className='px-6 py-8 text-center text-slate-500'>
-                  No cars in the fleet.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className='divide-y divide-slate-800/60 font-semibold'>
+              {cars.map((car) => (
+                <tr key={car._id ?? car.id} className='hover:bg-slate-900/60 transition'>
+                  <td className='px-6 py-4 font-bold text-white'>{car.model}</td>
+                  <td className='px-6 py-4 text-slate-400'>{car.type}</td>
+                  <td className='px-6 py-4 text-slate-200'>
+                    Rs. {Number(car.rate).toLocaleString('en-IN')}
+                  </td>
+                  <td className='px-6 py-4'>
+                    <span
+                      className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                        car.available
+                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                          : 'bg-slate-800 text-slate-400 border-slate-700'
+                      }`}
+                    >
+                      {car.available ? 'Available' : 'Rented'}
+                    </span>
+                  </td>
+                  {(user.role === 'admin' || user.isAdmin) && (
+                    <td className='px-6 py-4 text-right'>
+                      <button
+                        onClick={() => handleDelete(car._id ?? car.id)}
+                        className='text-rose-400 hover:text-rose-300 font-bold text-xs bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 px-3 py-1.5 rounded-lg transition cursor-pointer'
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))}
+              {cars.length === 0 && !isLoading && (
+                <tr>
+                  <td colSpan='5' className='px-6 py-8 text-center text-slate-500'>
+                    No vehicles found in fleet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </main>
   )
