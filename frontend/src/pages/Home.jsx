@@ -49,11 +49,6 @@ export default function Home({ cars: allCars, addBooking, isLoading: defaultLoad
         <div className='absolute -left-10 -top-10 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none' />
 
         <div className='relative z-10 max-w-3xl space-y-4'>
-          <div className='inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-extrabold uppercase tracking-widest'>
-            <span className='w-2 h-2 rounded-full bg-cyan-400 animate-ping' />
-            Premium Fleet • Instant Approval
-          </div>
-
           <h1 className='text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white'>
             Rent Your <span className='bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-400 bg-clip-text text-transparent'>Dream Car</span> In Seconds.
           </h1>
