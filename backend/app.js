@@ -53,7 +53,7 @@ app.use(cookieParser())
 const PORT = process.env.PORT || 3001
 
 app.get('/', (req, res) => {
-    res.send('Car Rental API is running')
+    res.send('API is working')
 })
 
 app.get('/health', (req,res) => res.status(200).json({ok: true}))
