@@ -45,14 +45,18 @@ export default function CarCard({ car, addBooking }) {
           onBooking={handleBooking}
         />
       )}
-      <div className='group bg-[#0F172A]/90 rounded-2xl overflow-hidden border border-slate-800/80 hover:border-slate-700/80 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-1.5 flex flex-col h-full relative'>
-        {/* Top Image Container */}
+      
+      <div className='group bg-[#0F172A] rounded-2xl overflow-hidden border border-slate-800 hover:border-cyan-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-1 flex flex-col h-full relative'>
+        {/* Image Container with Dark Gradient Overlay */}
         <div className='h-52 w-full relative bg-slate-900 overflow-hidden'>
           {imageUrl ? (
-            <div
-              className='w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700 ease-out'
-              style={{ backgroundImage: `url(${imageUrl})` }}
-            />
+            <>
+              <div
+                className='w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-700 ease-out'
+                style={{ backgroundImage: `url(${imageUrl})` }}
+              />
+              <div className='absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-black/30' />
+            </>
           ) : (
             <div className='w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 text-slate-600 space-y-1'>
               <svg className='w-8 h-8 opacity-40' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
@@ -62,9 +66,9 @@ export default function CarCard({ car, addBooking }) {
             </div>
           )}
 
-          {/* Top Overlay Badges */}
-          <div className='absolute top-3 left-3 right-3 flex justify-between items-start pointer-events-none'>
-            <span className='bg-[#0B0F17]/80 backdrop-blur-md border border-slate-700/60 text-slate-200 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest shadow-md'>
+          {/* Top Floating Badges */}
+          <div className='absolute top-3 left-3 right-3 flex justify-between items-start z-10'>
+            <span className='bg-slate-900/80 backdrop-blur-md border border-slate-700/80 text-cyan-300 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest shadow-md'>
               {type}
             </span>
             <span
@@ -79,41 +83,41 @@ export default function CarCard({ car, addBooking }) {
           </div>
         </div>
 
-        {/* Details Section */}
-        <div className='p-5 flex flex-col flex-grow justify-between bg-gradient-to-b from-[#0F172A] to-[#0B0F17]'>
-          <div className='space-y-1.5'>
-            <div className='flex justify-between items-start'>
-              <h3 className='text-lg font-bold text-white group-hover:text-cyan-400 transition-colors leading-tight'>
-                {name}
-              </h3>
-            </div>
-            <p className='text-xs text-slate-400 font-medium flex items-center gap-1.5'>
+        {/* Vehicle Information */}
+        <div className='p-5 flex flex-col flex-grow justify-between bg-[#0F172A] space-y-4'>
+          <div className='space-y-2'>
+            <h3 className='text-lg font-bold text-white group-hover:text-cyan-300 transition-colors leading-snug'>
+              {name}
+            </h3>
+
+            <div className='flex items-center gap-2 text-xs text-slate-400 font-medium'>
               <span className='w-1.5 h-1.5 rounded-full bg-cyan-400' />
-              {plateNumber ? `Plate: ${plateNumber}` : 'Instant Digital Rental'}
-            </p>
+              <span>{plateNumber ? `Plate: ${plateNumber}` : 'Digital Rental'}</span>
+            </div>
           </div>
 
-          <div className='pt-5 mt-4 border-t border-slate-800/80 flex items-end justify-between'>
+          {/* Pricing & Booking Action */}
+          <div className='pt-4 border-t border-slate-800/90 flex items-end justify-between gap-3'>
             <div>
-              <span className='text-xs font-extrabold uppercase tracking-widest text-slate-500 block mb-0.5'>Daily Rate</span>
+              <span className='text-[10px] font-extrabold uppercase tracking-widest text-slate-500 block mb-0.5'>Daily Rate</span>
               <div className='flex items-baseline gap-1'>
-                <span className='text-2xl font-black text-white group-hover:text-cyan-300 transition-colors'>
+                <span className='text-xl sm:text-2xl font-black text-white group-hover:text-cyan-300 transition-colors'>
                   Rs. {Number(price).toLocaleString('en-IN')}
                 </span>
-                <span className='text-xs text-slate-400 font-semibold'>/ day</span>
+                <span className='text-[11px] text-slate-400 font-semibold'>/ day</span>
               </div>
             </div>
 
             {available ? (
               <button
                 onClick={openModal}
-                className='px-5 py-2.5 rounded-xl text-xs font-bold text-slate-900 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 hover:brightness-110 shadow-lg shadow-cyan-500/20 transition cursor-pointer active:scale-95'
+                className='px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 shadow-md shadow-cyan-500/20 transition-all duration-200 cursor-pointer active:scale-95 whitespace-nowrap'
               >
                 Book Now
               </button>
             ) : (
-              <span className='px-4 py-2 rounded-xl text-xs font-bold text-slate-500 bg-slate-800/50 border border-slate-800 select-none'>
-                Rented
+              <span className='px-4 py-2 rounded-xl text-xs font-bold text-slate-500 bg-slate-800/40 border border-slate-800 select-none'>
+                Unavailable
               </span>
             )}
           </div>
