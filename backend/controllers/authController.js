@@ -61,7 +61,7 @@ export const logoutUser = async (req, res) => {
 
 export const getMe = async (req, res) => {
   try {
-    let token = req.cookies?.[COOKIE_NAME]
+    let token = req.cookies?.jwtToken || req.cookies?.[COOKIE_NAME]
     if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
       token = req.headers.authorization.split(' ')[1]
     }

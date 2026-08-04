@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-const COOKIE_NAME = 'token'
+const COOKIE_NAME = 'jwtToken'
 const TOKEN_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000
 
 const JWT_SECRET =
@@ -27,7 +27,7 @@ export function verifyToken(token) {
 export function setAuthCookie(res, token) {
   res.cookie(COOKIE_NAME, token, {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     secure: process.env.NODE_ENV === 'production',
     maxAge: TOKEN_MAX_AGE_MS,
     path: '/',
@@ -35,12 +35,14 @@ export function setAuthCookie(res, token) {
 }
 
 export function clearAuthCookie(res) {
-  res.clearCookie(COOKIE_NAME, {
+  const options = {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
-  })
+  }
+  res.clearCookie(COOKIE_NAME, options)
+  res.clearCookie('token', options)
 }
 
 export { COOKIE_NAME }

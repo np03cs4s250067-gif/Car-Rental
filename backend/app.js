@@ -13,19 +13,38 @@ dotenv.config()
 const app = express()
 
 // CORS configuration
-app.use(cors(
-  {
-    origin:(origin, callback)=>{
-      if(!origin || 
-        ['http://localhost:5173', process.env.FRONTEND_URL].includes(origin)
-      ){
-        return callback(null, true)
-      }
-      callback(new Error("CORS origin not allowed"))
+const defaultAllowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:5173',
+  'http://127.0.0.1:3000',
+  'https://dulcet-piroshki-05a4df.netlify.app'
+]
+
+const envOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(',').map(url => url.trim().replace(/\/$/, ''))
+  : []
+
+const allowedOrigins = Array.from(new Set([...defaultAllowedOrigins, ...envOrigins]))
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true)
+    
+    const cleanOrigin = origin.replace(/\/$/, '')
+    
+    if (allowedOrigins.includes(cleanOrigin) || /\.netlify\.app$/.test(cleanOrigin)) {
+      return callback(null, true)
     }
-    ,credentials:true
-  }
-))
+    
+    console.warn(`Blocked CORS request from origin: ${origin}`)
+    return callback(null, false)
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
+}))
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
