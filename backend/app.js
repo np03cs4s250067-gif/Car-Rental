@@ -6,6 +6,7 @@ import dbConnection from './config/db.js'
 import carRoutes from './routes/carRoutes.js'
 import bookingRoutes from "./routes/bookingRoutes.js"
 import authRoutes from './routes/authRoutes.js'
+import aiRouter from './routes/aiRoutes.js'
 
 dotenv.config()
 
@@ -32,17 +33,16 @@ app.use(cookieParser())
 
 const PORT = process.env.PORT || 3001
 
-app.get('/health', (req,res) => res.status(200).json({ok: true}))
-// Mount auth routes
-app.use('/auth', authRoutes)
+app.get('/', (req, res) => {
+    res.send('Car Rental API is running')
+})
 
-// Mount car and booking routes both at /api prefix and root level for maximum flexibility
+app.get('/health', (req,res) => res.status(200).json({ok: true}))
+// Mount routes
+app.use('/auth', authRoutes)
 app.use('/cars', carRoutes)
 app.use('/bookings', bookingRoutes)
-
-app.use('/api/cars', carRoutes)
-app.use('/api/bookings', bookingRoutes)
-app.use('/api/auth', authRoutes)
+app.use('/ai', aiRouter)
 
 await dbConnection()
 
