@@ -66,8 +66,8 @@ export default function CarCard({ car, addBooking }) {
             </div>
           )}
 
-          {/* Top Floating Badges */}
-          <div className='absolute top-3 left-3 right-3 flex justify-between items-start z-10'>
+          {/* Top Floating Badges (Left Aligned) */}
+          <div className='absolute top-3 left-3 flex items-center gap-2 z-10'>
             <span className='bg-slate-900/80 backdrop-blur-md border border-slate-700/80 text-cyan-300 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest shadow-md'>
               {type}
             </span>
