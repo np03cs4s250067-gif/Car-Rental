@@ -1,27 +1,27 @@
 import { generateGroqAIResponse } from "../services/groqAPI.js";
-import Car from "../data/car.js";
+import Vehicle from "../data/car.js";
 
 export const getCarRecommendation = async (req, res) => {
     try {
         const { passengers, budget, purpose } = req.body;
         
-        // Fetch currently available cars to pass to the AI
-        const availableCars = await Car.find({ available: true }, 'model type rate plateNumber');
+        // Fetch active available vehicles for AI prompt
+        const activeFleet = await Vehicle.find({ available: true }, 'model type rate plateNumber');
 
-        const tripDetails = { passengers, budget, purpose };
-        const response = await generateGroqAIResponse(tripDetails, availableCars);
+        const userCriteria = { passengers, budget, purpose };
+        const aiOutput = await generateGroqAIResponse(userCriteria, activeFleet);
     
-        return res.status(200).json({ data: response });
-    } catch (error) {
-        console.error("AI Generation Error:", error);
-        if (error.status === 429) {
+        return res.status(200).json({ data: aiOutput });
+    } catch (err) {
+        console.error("AI Assistant Error:", err);
+        if (err.status === 429) {
             return res.status(429).json({ error: "Rate limit exceeded. Please try again later." });
-        } else if (error.status === 500) {
+        } else if (err.status === 500) {
             return res.status(500).json({ error: "Internal server error from AI service." });
-        } else if (error.status === 400) {
-            return res.status(400).json({ error: "Bad request. Please check your input.", details: error.message });
+        } else if (err.status === 400) {
+            return res.status(400).json({ error: "Bad request. Please check your input.", details: err.message });
         } else {
-            return res.status(500).json({ error: "An unexpected error occurred.", details: error.message });
+            return res.status(500).json({ error: "An unexpected error occurred.", details: err.message });
         }
     }
 }

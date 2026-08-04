@@ -1,46 +1,46 @@
 import OpenAI from "openai";
 
-const client = new OpenAI({
+const groqClient = new OpenAI({
     apiKey: process.env.GROQ_API_KEY,
     baseURL: "https://api.groq.com/openai/v1",
 });
 
-export const generateGroqAIResponse = async (tripDetails, availableCars) => {
-    const SystemInstruction = `You are a car recommender for a Car Rental Website. Your ONLY job is to suggest cars from the provided list that fit the user's trip details.
-You must return the response in pure JSON format matching this structure:
+export const generateGroqAIResponse = async (userCriteria, availableFleet) => {
+    const systemRules = `You are a vehicle concierge for a Car Rental Platform. Your task is to recommend cars from the provided list that match the user's trip preferences.
+Return response in strict JSON format:
 {
   "recommendations": [
     {
       "model": "Car Model Name",
       "rate": 5000,
-      "reason": "Why this car fits the budget, passengers, and purpose."
+      "reason": "Why this car fits the user's criteria."
     }
   ]
 }
 
-RULES:
-1. Suggest the best 2-3 cars.
-2. The cars MUST be from the provided available cars list.
-3. Do not include any text outside the JSON.`;
+CRITERIA:
+1. Suggest top 2-3 matching vehicles.
+2. Vehicles MUST strictly exist in the provided available fleet list.
+3. Output ONLY JSON with no extra commentary.`;
 
-    const prompt = `TRIP DETAILS:
-- Passengers: ${tripDetails.passengers}
-- Budget: ${tripDetails.budget}
-- Purpose: ${tripDetails.purpose}
+    const userPrompt = `TRIP REQUEST:
+- Passengers: ${userCriteria.passengers}
+- Budget (NPR): ${userCriteria.budget}
+- Purpose: ${userCriteria.purpose}
 
-AVAILABLE CARS:
-${JSON.stringify(availableCars, null, 2)}
+AVAILABLE FLEET:
+${JSON.stringify(availableFleet, null, 2)}
 
-Given this trip need and our available car list, recommend the best 2-3 car options with reasons. Return JSON.`;
+Recommend the top 2-3 matching vehicles in valid JSON format.`;
 
-    const response = await client.chat.completions.create({
+    const completion = await groqClient.chat.completions.create({
         model: "llama-3.1-8b-instant",
         messages: [
-            { role: "system", content: SystemInstruction },
-            { role: "user", content: prompt }
+            { role: "system", content: systemRules },
+            { role: "user", content: userPrompt }
         ],
         response_format: { type: "json_object" }
     });
     
-    return JSON.parse(response.choices[0].message.content);
+    return JSON.parse(completion.choices[0].message.content);
 }

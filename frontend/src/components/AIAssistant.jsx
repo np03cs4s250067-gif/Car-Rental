@@ -11,10 +11,10 @@ export default function AIAssistant() {
   const [error, setError] = useState('')
 
   const presets = [
-    { label: '🏕️ Off-road Camping', purpose: 'Off-road mountain camping trip', passengers: '4', budget: '8000' },
-    { label: '🏙️ City Commute', purpose: 'Daily city commuting & business meetings', passengers: '2', budget: '4000' },
-    { label: '🏔️ Family Road Trip', purpose: 'Long distance scenic highway family vacation', passengers: '5', budget: '6500' },
-    { label: '✨ Special Event', purpose: 'Luxury arrival for wedding or formal event', passengers: '2', budget: '10000' },
+    { label: 'Off-road Camping', purpose: 'Off-road mountain camping trip', passengers: '4', budget: '8000' },
+    { label: 'City Commute', purpose: 'Daily city commuting & business meetings', passengers: '2', budget: '4000' },
+    { label: 'Family Road Trip', purpose: 'Long distance scenic highway family vacation', passengers: '5', budget: '6500' },
+    { label: 'Special Event', purpose: 'Luxury arrival for wedding or formal event', passengers: '2', budget: '10000' },
   ]
 
   const handlePresetSelect = (preset) => {

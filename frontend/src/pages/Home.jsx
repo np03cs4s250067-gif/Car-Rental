@@ -3,43 +3,45 @@ import { getCars } from '../api/carApi.js'
 import CarGrid from '../components/CarGrid.jsx'
 import AIAssistant from '../components/AIAssistant.jsx'
 
-export default function Home({ cars: allCars, addBooking, isLoading: defaultLoading, errors: defaultErrors }) {
-  const [selectedDate, setSelectedDate] = useState('')
-  const [selectedType, setSelectedType] = useState('All')
-  const [filteredCars, setFilteredCars] = useState(null)
-  const [dateLoading, setDateLoading] = useState(false)
-  const [dateErrors, setDateErrors] = useState([])
+export default function Home({ cars: initialFleet, addBooking, isLoading: isParentLoading, errors: parentErrors }) {
+  const [pickupDateVal, setPickupDateVal] = useState('')
+  const [activeCategory, setActiveCategory] = useState('All')
+  const [dateFilteredFleet, setDateFilteredFleet] = useState(null)
+  const [isFetchingByDate, setIsFetchingByDate] = useState(false)
+  const [dateQueryErrors, setDateQueryErrors] = useState([])
 
   useEffect(() => {
-    if (!selectedDate) {
-      setFilteredCars(null)
+    if (!pickupDateVal) {
+      setDateFilteredFleet(null)
       return
     }
-    async function fetchByDate() {
-      setDateLoading(true)
-      setDateErrors([])
+
+    async function queryFleetAvailability() {
+      setIsFetchingByDate(true)
+      setDateQueryErrors([])
       try {
-        const response = await getCars(selectedDate)
-        setFilteredCars(response.data)
+        const res = await getCars(pickupDateVal)
+        setDateFilteredFleet(res.data)
       } catch (err) {
-        setDateErrors([err])
+        setDateQueryErrors([err])
       } finally {
-        setDateLoading(false)
+        setIsFetchingByDate(false)
       }
     }
-    fetchByDate()
-  }, [selectedDate])
 
-  let displayCars = filteredCars !== null ? filteredCars : allCars
-  if (selectedType !== 'All') {
-    displayCars = displayCars.filter((car) => car.type === selectedType)
+    queryFleetAvailability()
+  }, [pickupDateVal])
+
+  let activeVehicles = dateFilteredFleet !== null ? dateFilteredFleet : initialFleet
+  if (activeCategory !== 'All') {
+    activeVehicles = activeVehicles.filter((vehicle) => vehicle.type === activeCategory)
   }
 
-  const isLoading = dateLoading || defaultLoading
-  const errors = [...(defaultErrors || []), ...dateErrors]
-  const availableCount = (displayCars || []).filter((c) => c.available).length
+  const isGlobalLoading = isFetchingByDate || isParentLoading
+  const combinedErrors = [...(parentErrors || []), ...dateQueryErrors]
+  const readyVehicleCount = (activeVehicles || []).filter((v) => v.available).length
 
-  const categories = ['All', 'Sedan', 'SUV', 'Sports', 'Electric', 'Hatchback']
+  const fleetCategories = ['All', 'Sedan', 'SUV', 'Sports', 'Electric', 'Hatchback']
 
   return (
     <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10'>
@@ -60,7 +62,7 @@ export default function Home({ cars: allCars, addBooking, isLoading: defaultLoad
           <div className='pt-2 flex flex-wrap items-center gap-6 text-slate-300 text-xs sm:text-sm font-semibold'>
             <div className='flex items-center gap-2'>
               <div className='w-2 h-2 rounded-full bg-emerald-400' />
-              <span>{availableCount} Vehicles Available Now</span>
+              <span>{readyVehicleCount} Vehicles Available Now</span>
             </div>
             <div className='flex items-center gap-2'>
               <div className='w-2 h-2 rounded-full bg-cyan-400' />
@@ -79,17 +81,17 @@ export default function Home({ cars: allCars, addBooking, isLoading: defaultLoad
         <div className='flex flex-col lg:flex-row lg:items-center justify-between gap-4'>
           {/* Category Pills */}
           <div className='flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-none'>
-            {categories.map((cat) => (
+            {fleetCategories.map((typeOption) => (
               <button
-                key={cat}
-                onClick={() => setSelectedType(cat)}
+                key={typeOption}
+                onClick={() => setActiveCategory(typeOption)}
                 className={`px-4 py-2 text-xs font-bold rounded-xl transition-all duration-200 whitespace-nowrap cursor-pointer ${
-                  selectedType === cat
+                  activeCategory === typeOption
                     ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/25 scale-105'
                     : 'bg-slate-800/80 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
                 }`}
               >
-                {cat}
+                {typeOption}
               </button>
             ))}
           </div>
@@ -103,14 +105,14 @@ export default function Home({ cars: allCars, addBooking, isLoading: defaultLoad
               <p className='text-[10px] font-extrabold uppercase tracking-widest text-slate-500'>Check Availability Date</p>
               <input
                 type='date'
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
+                value={pickupDateVal}
+                onChange={(e) => setPickupDateVal(e.target.value)}
                 className='text-xs font-bold text-slate-200 bg-transparent outline-none w-full cursor-pointer'
               />
             </div>
-            {selectedDate && (
+            {pickupDateVal && (
               <button
-                onClick={() => setSelectedDate('')}
+                onClick={() => setPickupDateVal('')}
                 className='text-xs font-bold text-rose-400 hover:text-rose-300 transition cursor-pointer px-2 py-1 bg-rose-500/10 rounded-lg'
               >
                 Clear
@@ -120,16 +122,15 @@ export default function Home({ cars: allCars, addBooking, isLoading: defaultLoad
         </div>
       </div>
 
-      <AIAssistant  />
+      <AIAssistant />
 
       {/* Fleet Display */}
       <CarGrid
-        cars={displayCars}
+        cars={activeVehicles}
         addBooking={addBooking}
-        isLoading={isLoading}
-        errors={errors}
+        isLoading={isGlobalLoading}
+        errors={combinedErrors}
       />
     </div>
   )
 }
-
