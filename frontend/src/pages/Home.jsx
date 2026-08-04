@@ -51,26 +51,26 @@ export default function Home({ cars: initialFleet, addBooking, isLoading: isPare
         <div className='absolute -left-10 -top-10 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none' />
 
         <div className='relative z-10 max-w-3xl space-y-4'>
-          <h1 className='text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight text-white'>
-            Rent Your <span className='bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-400 bg-clip-text text-transparent'>Dream Car</span> In Seconds.
+          <h1 className='text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white'>
+            Car Rental <span className='bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-400 bg-clip-text text-transparent'>Fleet & Reservations</span>
           </h1>
 
           <p className='text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl'>
-            Experience ultimate freedom on the road with top-tier luxury sedans, high-performance sports cars, rugged SUVs, and next-gen electric vehicles.
+            Select from available sedans, SUVs, sports cars, and electric vehicles. Choose a date to check availability or use the search filters below.
           </p>
 
           <div className='pt-2 flex flex-wrap items-center gap-6 text-slate-300 text-xs sm:text-sm font-semibold'>
             <div className='flex items-center gap-2'>
               <div className='w-2 h-2 rounded-full bg-emerald-400' />
-              <span>{readyVehicleCount} Vehicles Available Now</span>
+              <span>{readyVehicleCount} Vehicles Available</span>
             </div>
             <div className='flex items-center gap-2'>
               <div className='w-2 h-2 rounded-full bg-cyan-400' />
-              <span>24/7 Roadside Assistance</span>
+              <span>Flexible Rental Periods</span>
             </div>
             <div className='flex items-center gap-2'>
               <div className='w-2 h-2 rounded-full bg-indigo-400' />
-              <span>Zero Hidden Fees</span>
+              <span>Instant Confirmation</span>
             </div>
           </div>
         </div>

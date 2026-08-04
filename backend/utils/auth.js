@@ -5,7 +5,7 @@ const TOKEN_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000
 
 const JWT_SECRET =
   process.env.JWT_SECRET ||
-  's7xNX7rmvKElVEH6Az89mhERvGPUKcatW75YX0HDltwj7Lcm6kPcbg'
+  'cr_sec_9f82a17b4c3e801d529a6b4c10e3f5d7621a89b03c4f7e2d1a5b8c9e0f312345'
 
 export function generateToken(user) {
   return jwt.sign(

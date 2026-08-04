@@ -66,13 +66,13 @@ export default function AIAssistant() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">AI Vehicle Matchmaker</h2>
+                <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">Vehicle Recommender</h2>
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 tracking-wider">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                  Live AI
+                  AI Search
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-slate-400 mt-0.5">Tell us your plans and budget — our AI calculates the optimal vehicle match.</p>
+              <p className="text-xs sm:text-sm text-slate-400 mt-0.5">Specify passenger count, budget, and trip type to get quick vehicle suggestions.</p>
             </div>
           </div>
         </div>
@@ -163,14 +163,14 @@ export default function AIAssistant() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  <span>Analyzing Fleet with AI...</span>
+                  <span>Finding matching vehicles...</span>
                 </>
               ) : (
                 <>
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                   </svg>
-                  <span>Find Best Recommendations</span>
+                  <span>Search Recommendations</span>
                 </>
               )}
             </button>
@@ -192,7 +192,7 @@ export default function AIAssistant() {
           <div className="pt-6 border-t border-slate-800/80 space-y-4 animate-fade-in">
             <div className="flex items-center justify-between">
               <h3 className="text-base sm:text-lg font-black text-white flex items-center gap-2">
-                <span>Top AI Match Recommendations</span>
+                <span>Recommended Vehicles</span>
                 <span className="text-xs font-bold text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-0.5 rounded-full">
                   {recommendations.length} {recommendations.length === 1 ? 'Match' : 'Matches'}
                 </span>
